@@ -10,10 +10,13 @@ from scoring import debug_value
 
 
 DEBUG_FIELDS = [
-    "candidate_id",
     "rank",
+    "candidate_id",
     "final_score",
     "raw_score",
+    "current_title",
+    "years",
+    "location",
     "technical_fit",
     "hireability_fit",
     "trust_consistency_fit",
@@ -25,18 +28,19 @@ DEBUG_FIELDS = [
     "experience_fit",
     "product_startup_fit",
     "coding_recency_fit",
+    "semantic_score",
+    "recent_activity_fit",
+    "recruiter_response_fit",
+    "notice_period_fit",
+    "location_fit",
     "anomaly_penalty",
     "score_cap",
     "hard_honeypot",
     "hard_flags",
     "soft_flags",
     "cap_reasons",
-    "semantic_score",
-    "current_title",
-    "years",
-    "location",
-    "reasoning",
     "matched_evidence",
+    "reasoning",
 ]
 
 

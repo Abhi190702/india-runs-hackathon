@@ -1,12 +1,15 @@
 # RedrobRank V2 submission metadata.
-# Fill bracketed placeholders before portal submission.
+# Fill required placeholders before portal submission.
+# Run eval/final_sanity_check.py before setting submission_ready to true.
 
-team_name: "[YOUR TEAM NAME]"
+submission_ready: false  # Set true only after placeholders and sandbox link are final.
+
+team_name: "[YOUR TEAM NAME]"  # REQUIRED
 
 primary_contact:
-  name: "[Full Name]"
-  email: "[primary@example.com]"
-  phone: "+91-XXXXXXXXXX"
+  name: "[Full Name]"          # REQUIRED
+  email: "[primary@example.com]" # REQUIRED
+  phone: "+91-XXXXXXXXXX"      # REQUIRED
 
 team_members:
   - name: "[Member 1]"
@@ -22,17 +25,18 @@ team_members:
     email: "[member4@example.com]"
     role: "Product / Demo"
 
-github_repo: "https://github.com/hazelmayank/india-runs-hackathon"
-sandbox_link: "https://share.streamlit.io/[YOUR_USERNAME]/[YOUR_REPO]/main/app/streamlit_app.py"
+github_repo: "https://github.com/hazelmayank/india-runs-hackathon" # REQUIRED
+sandbox_link: "https://share.streamlit.io/[YOUR_USERNAME]/[YOUR_REPO]/main/app/streamlit_app.py" # REQUIRED after Streamlit deploy
 
-reproduce_command: "python src/rank.py --candidates ./data/candidates.jsonl --out ./submission.csv"
+reproduce_command: "python src/rank.py --candidates ./data/candidates.jsonl --out ./submission.csv --profile-runtime"
+fast_reproduce_command: "python src/rank.py --candidates ./data/candidates.jsonl --out ./submission_fast.csv --fast --profile-runtime"
 
 compute:
   platform: "local CPU"
-  cpu_cores: "[FILL]"
-  ram_gb: "[FILL]"
-  python_version: "[FILL]"
-  os: "[FILL]"
+  cpu_cores: "[FILL]"          # REQUIRED
+  ram_gb: "[FILL]"             # REQUIRED
+  python_version: "[FILL]"     # REQUIRED
+  os: "[FILL]"                 # REQUIRED
   uses_gpu_for_inference: false
   has_network_during_ranking: false
   hosted_llm_calls_during_ranking: false

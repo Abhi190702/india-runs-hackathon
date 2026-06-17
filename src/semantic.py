@@ -11,6 +11,13 @@ import math
 import jd
 from parser import get_current_job, get_history, get_profile, join_text
 
+NORMAL_MAX_FEATURES = 4000
+FAST_MAX_FEATURES = 800
+NORMAL_NGRAM_MAX = 1
+FAST_NGRAM_MAX = 1
+NORMAL_TEXT_CHARS = 600
+FAST_TEXT_CHARS = 260
+
 
 def build_jd_semantic_text():
     parts = [
@@ -25,7 +32,7 @@ def build_jd_semantic_text():
     return join_text(parts)
 
 
-def candidate_semantic_text(candidate):
+def candidate_semantic_text(candidate, max_chars=NORMAL_TEXT_CHARS):
     profile = get_profile(candidate)
     history = get_history(candidate)
     current_job = get_current_job(candidate)
@@ -44,10 +51,15 @@ def candidate_semantic_text(candidate):
             *recent_history,
         ]
     )
-    return text[:600]
+    return text[:max_chars]
 
 
-def compute_semantic_scores(candidates):
+def compute_semantic_scores(
+    candidates,
+    max_features=NORMAL_MAX_FEATURES,
+    ngram_max=NORMAL_NGRAM_MAX,
+    max_candidate_chars=NORMAL_TEXT_CHARS,
+):
     """Return (scores, enabled, warning). Scores are normalized 0..1."""
     try:
         import numpy as np
@@ -60,15 +72,15 @@ def compute_semantic_scores(candidates):
         return [], True, ""
 
     jd_text = build_jd_semantic_text()
-    candidate_texts = [candidate_semantic_text(c) for c in candidates]
+    candidate_texts = [candidate_semantic_text(c, max_chars=max_candidate_chars) for c in candidates]
     docs = [jd_text] + candidate_texts
     vectorizer = TfidfVectorizer(
         lowercase=True,
         stop_words="english",
-        ngram_range=(1, 1),
+        ngram_range=(1, max(1, int(ngram_max))),
         min_df=2,
         max_df=0.88,
-        max_features=4000,
+        max_features=max(100, int(max_features)),
         dtype=np.float32,
     )
     matrix = vectorizer.fit_transform(docs)

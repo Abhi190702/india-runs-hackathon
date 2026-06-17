@@ -36,6 +36,8 @@ RedrobRank V2 is a deterministic, CPU-only, source-aware ranking engine that sel
 - [Installation](#installation)
 - [Run The Ranker](#run-the-ranker)
 - [Verification Snapshot](#verification-snapshot)
+- [Final Verification](#final-verification)
+- [Submission Checklist](#submission-checklist)
 - [Debugging And Inspection](#debugging-and-inspection)
 - [Streamlit Demo](#streamlit-demo)
 - [Contributors](#contributors)
@@ -487,7 +489,14 @@ python src/rank.py \
   --candidates ./data/candidates.jsonl \
   --out ./submission.csv \
   --debug-json ./outputs/top100_debug.json \
-  --debug-csv ./outputs/top100_debug.csv
+  --debug-csv ./outputs/top100_debug.csv \
+  --profile-runtime
+```
+
+Fast mode for slower CPU-only machines:
+
+```bash
+python src/rank.py --candidates ./data/candidates.jsonl --out ./submission_fast.csv --fast --profile-runtime
 ```
 
 Disable semantic layer:
@@ -504,37 +513,60 @@ Latest local full verification:
 
 ```text
 candidates loaded: 100000
-runtime seconds: 245.71
 semantic: enabled
 hard honeypots detected: 69
 hard honeypots in top 100: 0
 soft anomaly count in top 100: 6
 top score: 0.939794
 rank 100 score: 0.763930
+load_time: 14.70
+semantic_time: 38.24
+scoring_time: 85.07
+total_time: 138.91
+fast_total_time: 131.62
 ```
 
 Validation:
 
 ```text
-Unit tests: 18 passed
+Unit tests: 20 passed
 Internal validator: passed
 Organizer validator: Submission is valid
 Reasoning quality check: passed
 Compile checks: passed
+Final sanity: submission/debug passed; metadata placeholders still need team details
 ```
+
+## Final Verification
 
 Commands:
 
 ```bash
 python -m pytest -q
-python src/rank.py --candidates ./data/candidates.jsonl --out ./submission.csv --debug-json ./outputs/top100_debug.json --debug-csv ./outputs/top100_debug.csv
+python -m compileall src app eval
+python -m py_compile app/streamlit_app.py
+python src/rank.py --candidates ./app/sample_candidates.json --out ./outputs/sample_submission.csv --debug-json ./outputs/sample_debug.json --debug-csv ./outputs/sample_debug.csv --fast
+python src/rank.py --candidates ./data/candidates.jsonl --out ./submission.csv --debug-json ./outputs/top100_debug.json --debug-csv ./outputs/top100_debug.csv --profile-runtime
+python src/rank.py --candidates ./data/candidates.jsonl --out ./submission_fast.csv --debug-json ./outputs/top100_debug_fast.json --debug-csv ./outputs/top100_debug_fast.csv --fast --profile-runtime
 python outputs/validate_submission.py submission.csv
 python -c "from src.validators import validate_submission_csv; print(validate_submission_csv('submission.csv'))"
 python eval/check_reasoning_quality.py --submission submission.csv
 python eval/inspect_top.py --debug outputs/top100_debug.csv --k 25
-python -m py_compile app/streamlit_app.py
-python -m compileall src app eval
+python eval/final_sanity_check.py --submission submission.csv --debug outputs/top100_debug.csv --metadata submission_metadata.yaml
 ```
+
+`submission_metadata.yaml` intentionally stays `submission_ready: false` until team contact details and the deployed Streamlit sandbox link are filled.
+
+---
+
+## Submission Checklist
+
+- `submission.csv` has exactly 100 rows and the required header.
+- `outputs/top100_debug.csv` has no hard honeypots in top 100.
+- `python outputs/validate_submission.py submission.csv` passes.
+- `python eval/final_sanity_check.py ...` passes except for intentional metadata placeholders.
+- `submission_metadata.yaml` has real team/contact/sandbox details before portal submission.
+- `data/candidates.jsonl`, `submission.csv`, and generated debug outputs are not committed.
 
 ---
 

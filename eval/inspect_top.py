@@ -18,8 +18,13 @@ FIELDS = [
     "career_evidence_fit",
     "retrieval_ranking_fit",
     "production_system_fit",
+    "semantic_score",
     "anomaly_penalty",
+    "score_cap",
+    "hard_honeypot",
+    "soft_flags",
     "cap_reasons",
+    "matched_evidence",
     "reasoning",
 ]
 

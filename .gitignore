@@ -19,6 +19,7 @@ env/
 
 # Generated outputs
 submission.csv
+submission_fast.csv
 outputs/*
 !outputs/.gitkeep
 !outputs/final_submission.csv

@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 import json
+import time
 from concurrent.futures import ProcessPoolExecutor
 
 from anomalies import analyze_anomalies
@@ -18,7 +19,7 @@ from parser import clamp, flatten_candidate
 from reasoning import build_reasoning
 
 
-PARALLEL_CHUNKSIZE = 256
+PARALLEL_CHUNKSIZE = 512
 
 
 def _round(value):
@@ -79,6 +80,13 @@ def score_candidate_v2(candidate, semantic_score=None, today=None, include_reaso
         "experience_fit": _round(features["experience_fit"]),
         "product_startup_fit": _round(features["product_startup_fit"]),
         "coding_recency_fit": _round(features["coding_recency_fit"]),
+        "recent_activity_fit": _round(features["recent_activity_fit"]),
+        "recruiter_response_fit": _round(features["recruiter_response_fit"]),
+        "avg_response_time_fit": _round(features["avg_response_time_fit"]),
+        "notice_period_fit": _round(features["notice_period_fit"]),
+        "location_fit": _round(features["location_fit"]),
+        "work_mode_fit": _round(features["work_mode_fit"]),
+        "relocation_fit": _round(features["relocation_fit"]),
         "anomaly_penalty": round(anomalies["anomaly_penalty"], 6),
         "score_cap": round(cap["score_cap"], 6),
         "hard_honeypot": anomalies["hard_honeypot"],
@@ -127,18 +135,24 @@ def _score_task(task):
     return row
 
 
-def rank_candidates_v2(candidates, semantic_scores=None, today=None, include_reasoning=True, workers=1):
+def rank_candidates_v2(candidates, semantic_scores=None, today=None, include_reasoning=True, workers=1, timings=None):
     semantic_scores = semantic_scores if semantic_scores is not None else [None] * len(candidates)
     tasks = (
         (i, candidate, semantic_scores[i], today, include_reasoning)
         for i, candidate in enumerate(candidates)
     )
+    scoring_start = time.perf_counter()
     if workers and workers > 1 and len(candidates) >= 5000 and not include_reasoning:
         with ProcessPoolExecutor(max_workers=workers) as executor:
             rows = list(executor.map(_score_task, tasks, chunksize=PARALLEL_CHUNKSIZE))
     else:
         rows = [_score_task(task) for task in tasks]
+    if timings is not None:
+        timings["scoring_time"] = time.perf_counter() - scoring_start
+    sorting_start = time.perf_counter()
     rows.sort(key=sort_key)
+    if timings is not None:
+        timings["sorting_time"] = time.perf_counter() - sorting_start
     return rows
 
 
