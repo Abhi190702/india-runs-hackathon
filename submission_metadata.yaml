@@ -2,41 +2,29 @@
 # Fill required placeholders before portal submission.
 # Run eval/final_sanity_check.py before setting submission_ready to true.
 
-submission_ready: false  # Set true only after placeholders and sandbox link are final.
+submission_ready: false  # Set true only after the Streamlit sandbox link is final.
 
-team_name: "[YOUR TEAM NAME]"  # REQUIRED
+team_name: "WildSqaud"  # REQUIRED
 
 primary_contact:
-  name: "[Full Name]"          # REQUIRED
-  email: "[primary@example.com]" # REQUIRED
-  phone: "+91-XXXXXXXXXX"      # REQUIRED
+  name: "Mayank"  # REQUIRED
+  email: "mayankjeefinal@gmail.com"  # REQUIRED
+  phone: "+91-7651816966"  # REQUIRED
 
-team_members:
-  - name: "[Member 1]"
-    email: "[member1@example.com]"
-    role: "Team Lead / ML"
-  - name: "[Member 2]"
-    email: "[member2@example.com]"
-    role: "Data Engineering"
-  - name: "[Member 3]"
-    email: "[member3@example.com]"
-    role: "Evaluation / QA"
-  - name: "[Member 4]"
-    email: "[member4@example.com]"
-    role: "Product / Demo"
+team_members: []  # Fill only if the submission portal requires a full member roster.
 
 github_repo: "https://github.com/hazelmayank/india-runs-hackathon" # REQUIRED
-sandbox_link: "https://share.streamlit.io/[YOUR_USERNAME]/[YOUR_REPO]/main/app/streamlit_app.py" # REQUIRED after Streamlit deploy
+sandbox_link: "TO_BE_UPDATED_AFTER_STREAMLIT_DEPLOYMENT" # TODO: Replace with real Streamlit Cloud URL before final submission.
 
 reproduce_command: "python src/rank.py --candidates ./data/candidates.jsonl --out ./submission.csv --profile-runtime"
 fast_reproduce_command: "python src/rank.py --candidates ./data/candidates.jsonl --out ./submission_fast.csv --fast --profile-runtime"
 
 compute:
   platform: "local CPU"
-  cpu_cores: "[FILL]"          # REQUIRED
-  ram_gb: "[FILL]"             # REQUIRED
-  python_version: "[FILL]"     # REQUIRED
-  os: "[FILL]"                 # REQUIRED
+  cpu_cores: 8
+  ram_gb: 8
+  python_version: "3.11.9"
+  os: "Windows 11"
   uses_gpu_for_inference: false
   has_network_during_ranking: false
   hosted_llm_calls_during_ranking: false
@@ -47,7 +35,7 @@ ai_tools_used:
   - "Codex / AI coding assistant for implementation and review only"
 
 ai_usage_summary: |
-  AI tools helped author, refactor, and review the deterministic ranking code.
+  AI tools were used for implementation and review only.
   No candidate data is sent to hosted LLMs or external APIs during ranking.
 
 methodology_summary: |
