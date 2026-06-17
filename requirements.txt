@@ -1,9 +1,4 @@
-# Core runtime — must run CPU-only, no network, <5 min for the ranking step.
-# v1 deliberately depends on nothing heavy so it always reproduces.
 numpy==1.26.4
-
-# Optional (v2 semantic layer). Embeddings are PRE-COMPUTED offline and saved to
-# disk; the ranking step only loads the matrix, so it stays inside the compute budget.
-# Uncomment when you add the embedding layer:
-# sentence-transformers==2.7.0
-# scikit-learn==1.4.2
+scikit-learn==1.4.2
+streamlit==1.35.0
+pytest==8.2.0

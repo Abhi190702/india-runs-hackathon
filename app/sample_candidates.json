@@ -1,0 +1,381 @@
+{
+  "expand_to": 100,
+  "candidates": [
+    {
+      "candidate_id": "CAND_9000001",
+      "profile": {
+        "anonymized_name": "Demo A",
+        "headline": "Senior ML Engineer building semantic search",
+        "summary": "Hands-on engineer focused on embeddings, retrieval, ranking evaluation, and production ML systems.",
+        "location": "Pune",
+        "country": "India",
+        "years_of_experience": 7.2,
+        "current_title": "Senior ML Engineer",
+        "current_company": "TalentSearch AI",
+        "current_company_size": "51-200",
+        "current_industry": "HR-tech SaaS"
+      },
+      "career_history": [
+        {
+          "company": "TalentSearch AI",
+          "title": "Senior ML Engineer",
+          "start_date": "2022-05-01",
+          "end_date": null,
+          "duration_months": 49,
+          "is_current": true,
+          "industry": "HR-tech SaaS",
+          "company_size": "51-200",
+          "description": "Built and deployed FAISS-based semantic search and candidate matching services using embeddings, BM25 hybrid search, and NDCG offline evaluation. Owned latency monitoring and index refresh pipelines for production recruiters."
+        },
+        {
+          "company": "MarketReco",
+          "title": "ML Engineer",
+          "start_date": "2019-04-01",
+          "end_date": "2022-04-01",
+          "duration_months": 36,
+          "is_current": false,
+          "industry": "Marketplace",
+          "company_size": "201-500",
+          "description": "Implemented recommendation ranking and personalization experiments with click feedback and A/B testing."
+        }
+      ],
+      "education": [{"institution": "IIT Demo", "degree": "B.Tech", "field_of_study": "Computer Science", "start_year": 2014, "end_year": 2018, "tier": "tier_1"}],
+      "skills": [
+        {"name": "Python", "proficiency": "expert", "endorsements": 80, "duration_months": 84},
+        {"name": "FAISS", "proficiency": "advanced", "endorsements": 42, "duration_months": 36},
+        {"name": "NDCG", "proficiency": "advanced", "endorsements": 20, "duration_months": 24}
+      ],
+      "redrob_signals": {
+        "profile_completeness_score": 96,
+        "signup_date": "2025-01-10",
+        "last_active_date": "2026-05-25",
+        "open_to_work_flag": true,
+        "profile_views_received_30d": 40,
+        "applications_submitted_30d": 2,
+        "recruiter_response_rate": 0.76,
+        "avg_response_time_hours": 18,
+        "skill_assessment_scores": {"Python": 91, "FAISS": 84, "NDCG": 82},
+        "connection_count": 420,
+        "endorsements_received": 130,
+        "notice_period_days": 30,
+        "expected_salary_range_inr_lpa": {"min": 45, "max": 60},
+        "preferred_work_mode": "hybrid",
+        "willing_to_relocate": true,
+        "github_activity_score": 72,
+        "search_appearance_30d": 22,
+        "saved_by_recruiters_30d": 9,
+        "interview_completion_rate": 0.94,
+        "offer_acceptance_rate": 0.70,
+        "verified_email": true,
+        "verified_phone": true,
+        "linkedin_connected": true
+      }
+    },
+    {
+      "candidate_id": "CAND_9000002",
+      "profile": {
+        "anonymized_name": "Demo B",
+        "headline": "Backend/Data Engineer",
+        "summary": "Data engineer with strong pipelines and some ML collaboration, interested in applied AI.",
+        "location": "Bengaluru",
+        "country": "India",
+        "years_of_experience": 6.4,
+        "current_title": "Backend Engineer",
+        "current_company": "Mindtree",
+        "current_company_size": "10001+",
+        "current_industry": "IT Services"
+      },
+      "career_history": [
+        {
+          "company": "Mindtree",
+          "title": "Backend Engineer",
+          "start_date": "2023-01-01",
+          "end_date": null,
+          "duration_months": 41,
+          "is_current": true,
+          "industry": "IT Services",
+          "company_size": "10001+",
+          "description": "Implemented Kafka and Spark data pipelines for feature generation and model-serving inputs. Worked with data scientists but did not own ranking or retrieval systems."
+        },
+        {
+          "company": "RetailMart",
+          "title": "Analytics Engineer",
+          "start_date": "2019-08-01",
+          "end_date": "2022-12-01",
+          "duration_months": 40,
+          "is_current": false,
+          "industry": "E-commerce",
+          "company_size": "1001-5000",
+          "description": "Built Airflow pipelines and warehouse models supporting analytics and internal ML experiments."
+        }
+      ],
+      "education": [{"institution": "NIT Demo", "degree": "B.E.", "field_of_study": "Computer Science", "start_year": 2015, "end_year": 2019, "tier": "tier_2"}],
+      "skills": [
+        {"name": "Python", "proficiency": "advanced", "endorsements": 30, "duration_months": 60},
+        {"name": "Kafka", "proficiency": "advanced", "endorsements": 18, "duration_months": 36},
+        {"name": "Milvus", "proficiency": "intermediate", "endorsements": 8, "duration_months": 8}
+      ],
+      "redrob_signals": {
+        "profile_completeness_score": 88,
+        "signup_date": "2025-07-10",
+        "last_active_date": "2026-05-20",
+        "open_to_work_flag": true,
+        "profile_views_received_30d": 14,
+        "applications_submitted_30d": 1,
+        "recruiter_response_rate": 0.42,
+        "avg_response_time_hours": 80,
+        "skill_assessment_scores": {"Python": 78},
+        "connection_count": 180,
+        "endorsements_received": 70,
+        "notice_period_days": 60,
+        "expected_salary_range_inr_lpa": {"min": 28, "max": 38},
+        "preferred_work_mode": "flexible",
+        "willing_to_relocate": true,
+        "github_activity_score": 44,
+        "search_appearance_30d": 10,
+        "saved_by_recruiters_30d": 2,
+        "interview_completion_rate": 0.82,
+        "offer_acceptance_rate": -1,
+        "verified_email": true,
+        "verified_phone": true,
+        "linkedin_connected": true
+      }
+    },
+    {
+      "candidate_id": "CAND_9000003",
+      "profile": {
+        "anonymized_name": "Demo C",
+        "headline": "Prompt Engineer and chatbot builder",
+        "summary": "Built LangChain chatbots with OpenAI API and prompt engineering for internal demos.",
+        "location": "Toronto",
+        "country": "Canada",
+        "years_of_experience": 2.5,
+        "current_title": "AI Developer",
+        "current_company": "DemoBots",
+        "current_company_size": "11-50",
+        "current_industry": "Consulting"
+      },
+      "career_history": [
+        {
+          "company": "DemoBots",
+          "title": "AI Developer",
+          "start_date": "2024-01-01",
+          "end_date": null,
+          "duration_months": 29,
+          "is_current": true,
+          "industry": "Consulting",
+          "company_size": "11-50",
+          "description": "Built chatbot prototypes with LangChain and OpenAI API for client demos."
+        }
+      ],
+      "education": [{"institution": "Demo University", "degree": "B.Sc", "field_of_study": "Information Technology", "start_year": 2019, "end_year": 2022, "tier": "tier_3"}],
+      "skills": [
+        {"name": "LangChain", "proficiency": "expert", "endorsements": 20, "duration_months": 10},
+        {"name": "Prompt Engineering", "proficiency": "expert", "endorsements": 18, "duration_months": 8}
+      ],
+      "redrob_signals": {
+        "profile_completeness_score": 75,
+        "signup_date": "2025-12-01",
+        "last_active_date": "2026-04-12",
+        "open_to_work_flag": true,
+        "profile_views_received_30d": 3,
+        "applications_submitted_30d": 1,
+        "recruiter_response_rate": 0.30,
+        "avg_response_time_hours": 96,
+        "skill_assessment_scores": {"LangChain": 66},
+        "connection_count": 80,
+        "endorsements_received": 40,
+        "notice_period_days": 30,
+        "expected_salary_range_inr_lpa": {"min": 20, "max": 28},
+        "preferred_work_mode": "remote",
+        "willing_to_relocate": false,
+        "github_activity_score": 18,
+        "search_appearance_30d": 4,
+        "saved_by_recruiters_30d": 1,
+        "interview_completion_rate": 0.75,
+        "offer_acceptance_rate": -1,
+        "verified_email": true,
+        "verified_phone": false,
+        "linkedin_connected": true
+      }
+    },
+    {
+      "candidate_id": "CAND_9000004",
+      "profile": {
+        "anonymized_name": "Demo D",
+        "headline": "Computer Vision Researcher",
+        "summary": "Research background in image classification, OCR, object detection, and robotics.",
+        "location": "Delhi",
+        "country": "India",
+        "years_of_experience": 5.8,
+        "current_title": "Research Scientist",
+        "current_company": "VisionLab",
+        "current_company_size": "51-200",
+        "current_industry": "Research"
+      },
+      "career_history": [
+        {
+          "company": "VisionLab",
+          "title": "Research Scientist",
+          "start_date": "2020-08-01",
+          "end_date": null,
+          "duration_months": 70,
+          "is_current": true,
+          "industry": "Research",
+          "company_size": "51-200",
+          "description": "Published work on image classification, OCR, object detection, and robotics datasets without production deployment."
+        }
+      ],
+      "education": [{"institution": "Demo Institute", "degree": "M.Tech", "field_of_study": "Computer Vision", "start_year": 2018, "end_year": 2020, "tier": "tier_2"}],
+      "skills": [
+        {"name": "Computer Vision", "proficiency": "expert", "endorsements": 50, "duration_months": 60},
+        {"name": "OCR", "proficiency": "advanced", "endorsements": 25, "duration_months": 36}
+      ],
+      "redrob_signals": {
+        "profile_completeness_score": 84,
+        "signup_date": "2025-04-01",
+        "last_active_date": "2025-10-01",
+        "open_to_work_flag": false,
+        "profile_views_received_30d": 5,
+        "applications_submitted_30d": 0,
+        "recruiter_response_rate": 0.18,
+        "avg_response_time_hours": 240,
+        "skill_assessment_scores": {"Computer Vision": 88},
+        "connection_count": 220,
+        "endorsements_received": 90,
+        "notice_period_days": 90,
+        "expected_salary_range_inr_lpa": {"min": 35, "max": 45},
+        "preferred_work_mode": "onsite",
+        "willing_to_relocate": true,
+        "github_activity_score": 30,
+        "search_appearance_30d": 5,
+        "saved_by_recruiters_30d": 1,
+        "interview_completion_rate": 0.80,
+        "offer_acceptance_rate": 0.50,
+        "verified_email": true,
+        "verified_phone": true,
+        "linkedin_connected": false
+      }
+    },
+    {
+      "candidate_id": "CAND_9000005",
+      "profile": {
+        "anonymized_name": "Demo E",
+        "headline": "HR Manager with AI skills",
+        "summary": "HR manager listing AI, embeddings, vector search, and ranking skills.",
+        "location": "Mumbai",
+        "country": "India",
+        "years_of_experience": 8.0,
+        "current_title": "HR Manager",
+        "current_company": "PeopleOps",
+        "current_company_size": "501-1000",
+        "current_industry": "Human Resources"
+      },
+      "career_history": [
+        {
+          "company": "PeopleOps",
+          "title": "HR Manager",
+          "start_date": "2021-01-01",
+          "end_date": null,
+          "duration_months": 65,
+          "is_current": true,
+          "industry": "Human Resources",
+          "company_size": "501-1000",
+          "description": "Managed recruiting operations, onboarding, payroll coordination, and HR reporting."
+        }
+      ],
+      "education": [{"institution": "Demo Business School", "degree": "MBA", "field_of_study": "HR", "start_year": 2014, "end_year": 2016, "tier": "tier_3"}],
+      "skills": [
+        {"name": "Embeddings", "proficiency": "expert", "endorsements": 12, "duration_months": 0},
+        {"name": "Vector Search", "proficiency": "expert", "endorsements": 11, "duration_months": 0},
+        {"name": "NDCG", "proficiency": "expert", "endorsements": 10, "duration_months": 0}
+      ],
+      "redrob_signals": {
+        "profile_completeness_score": 72,
+        "signup_date": "2025-02-01",
+        "last_active_date": "2026-05-01",
+        "open_to_work_flag": true,
+        "profile_views_received_30d": 8,
+        "applications_submitted_30d": 1,
+        "recruiter_response_rate": 0.50,
+        "avg_response_time_hours": 48,
+        "skill_assessment_scores": {},
+        "connection_count": 260,
+        "endorsements_received": 35,
+        "notice_period_days": 45,
+        "expected_salary_range_inr_lpa": {"min": 24, "max": 30},
+        "preferred_work_mode": "hybrid",
+        "willing_to_relocate": true,
+        "github_activity_score": -1,
+        "search_appearance_30d": 4,
+        "saved_by_recruiters_30d": 0,
+        "interview_completion_rate": 0.80,
+        "offer_acceptance_rate": 0.40,
+        "verified_email": true,
+        "verified_phone": true,
+        "linkedin_connected": true
+      }
+    },
+    {
+      "candidate_id": "CAND_9000006",
+      "profile": {
+        "anonymized_name": "Demo F",
+        "headline": "Impossible profile honeypot",
+        "summary": "Looks technical but has contradictory career data.",
+        "location": "Noida",
+        "country": "India",
+        "years_of_experience": 3.0,
+        "current_title": "ML Engineer",
+        "current_company": "DateBug AI",
+        "current_company_size": "11-50",
+        "current_industry": "AI SaaS"
+      },
+      "career_history": [
+        {
+          "company": "DateBug AI",
+          "title": "ML Engineer",
+          "start_date": "2027-01-01",
+          "end_date": "2025-01-01",
+          "duration_months": 80,
+          "is_current": true,
+          "industry": "AI SaaS",
+          "company_size": "11-50",
+          "description": "Built vector search and recommendation ranking services."
+        }
+      ],
+      "education": [{"institution": "Demo College", "degree": "B.Tech", "field_of_study": "Computer Science", "start_year": 2022, "end_year": 2021, "tier": "tier_3"}],
+      "skills": [
+        {"name": "Python", "proficiency": "expert", "endorsements": 5, "duration_months": 0},
+        {"name": "FAISS", "proficiency": "expert", "endorsements": 5, "duration_months": 0},
+        {"name": "Reranking", "proficiency": "expert", "endorsements": 5, "duration_months": 0},
+        {"name": "NDCG", "proficiency": "expert", "endorsements": 5, "duration_months": 0},
+        {"name": "Milvus", "proficiency": "expert", "endorsements": 5, "duration_months": 0}
+      ],
+      "redrob_signals": {
+        "profile_completeness_score": 90,
+        "signup_date": "2025-01-01",
+        "last_active_date": "2026-05-30",
+        "open_to_work_flag": true,
+        "profile_views_received_30d": 10,
+        "applications_submitted_30d": 1,
+        "recruiter_response_rate": 0.90,
+        "avg_response_time_hours": 5,
+        "skill_assessment_scores": {"Python": 95},
+        "connection_count": 120,
+        "endorsements_received": 30,
+        "notice_period_days": 15,
+        "expected_salary_range_inr_lpa": {"min": 20, "max": 28},
+        "preferred_work_mode": "hybrid",
+        "willing_to_relocate": true,
+        "github_activity_score": 80,
+        "search_appearance_30d": 5,
+        "saved_by_recruiters_30d": 2,
+        "interview_completion_rate": 0.90,
+        "offer_acceptance_rate": 0.70,
+        "verified_email": true,
+        "verified_phone": true,
+        "linkedin_connected": true
+      }
+    }
+  ]
+}

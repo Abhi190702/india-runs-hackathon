@@ -1,60 +1,76 @@
-"""
-reasoning.py — Generate the per-candidate 1-2 sentence justification.
+"""Deterministic, grounded reasoning strings for submission rows."""
 
-Stage 4 (manual review) checks that reasoning: (1) cites specific facts from the
-profile, (2) connects to specific JD requirements, (3) honestly names gaps,
-(4) never hallucinates skills/employers not in the profile, (5) varies row to
-row, (6) matches the rank's tone.
+from __future__ import annotations
 
-So we build the sentence DETERMINISTICALLY from facts we actually extracted —
-no free-text LLM that could invent things. Every clause is backed by a value we
-read from the candidate. Variation comes naturally because it's assembled from
-each candidate's own facts and flags.
-"""
-
-_CONCEPT_LABEL = {
-    "embeddings_retrieval": "embeddings/retrieval",
-    "vector_db_hybrid_search": "vector search",
-    "ranking_recsys_search": "ranking/recsys",
-    "evaluation_frameworks": "ranking evaluation (NDCG/MRR)",
-    "nlp_ir": "NLP/IR",
-    "strong_python_production": "production Python",
-}
+import jd
+from parser import clean_text, flatten_candidate
 
 
-def build_reasoning(c, fit_ev, avail_notes, is_honeypot, honeypot_reasons):
-    p = c.get("profile", {})
-    title = p.get("current_title", "professional")
-    yrs = p.get("years_of_experience", 0) or 0
+def _short(text, limit=120):
+    text = clean_text(text)
+    if len(text) <= limit:
+        return text
+    return text[: limit - 3].rstrip() + "..."
 
-    if is_honeypot:
-        return (f"{title} with internal inconsistencies "
-                f"({honeypot_reasons[0]}); flagged as likely honeypot and de-ranked.")
 
-    # Positive clause — name the strongest matched JD concepts (specific facts).
-    strengths = [_CONCEPT_LABEL[m] for m in fit_ev.get("matched_must", [])
-                 if m in _CONCEPT_LABEL][:3]
-    loc = p.get("location", "")
-    bits = [f"{title} with {yrs:.1f} yrs"]
-    if strengths:
-        bits.append("strength in " + ", ".join(strengths))
-    if fit_ev.get("product_ratio", 0) >= 0.5:
-        bits.append("product-company background")
-    head = "; ".join(bits)
+def _concept_phrase(score_row):
+    concepts = score_row.get("matched_concepts") or []
+    labels = jd.concept_labels(concepts[:3])
+    if not labels:
+        return "limited direct retrieval/ranking evidence"
+    return ", ".join(labels)
 
-    # Honest concerns — surface real gaps/penalties and availability issues.
-    concerns = []
-    concerns.extend(fit_ev.get("penalties", [])[:2])
-    if not strengths:
-        concerns.append("limited direct retrieval/ranking evidence")
-    concerns.extend(avail_notes[:1])
-    if loc:
-        lo = loc.lower()
-        if not any(city in lo for city in
-                   ("pune", "noida", "hyderabad", "mumbai", "delhi", "bangalore",
-                    "bengaluru", "gurgaon", "gurugram", "ncr")):
-            concerns.append(f"based in {loc}")
 
-    if concerns:
-        return f"{head}. Concerns: {'; '.join(concerns[:3])}."
-    return f"{head}. Strong all-round fit against the JD's core requirements."
+def _availability_note(score_row):
+    notes = []
+    if score_row.get("recent_activity_fit", 0.0) >= 0.85:
+        notes.append("recently active")
+    if score_row.get("recruiter_response_fit", 0.0) >= 0.70:
+        notes.append("responsive to recruiters")
+    if score_row.get("notice_period_fit", 0.0) <= 0.45:
+        notes.append("long notice")
+    if score_row.get("location_fit", 0.0) >= 0.90:
+        notes.append("location aligns")
+    return ", ".join(notes[:2])
+
+
+def _concern(score_row):
+    flags = score_row.get("soft_flags") or []
+    caps = score_row.get("cap_reasons") or []
+    if flags:
+        return flags[0]
+    if caps:
+        return caps[0]
+    if score_row.get("retrieval_ranking_fit", 0.0) < 0.35:
+        return "retrieval/ranking evidence is thin"
+    if score_row.get("production_system_fit", 0.0) < 0.35:
+        return "production evidence is limited"
+    return ""
+
+
+def build_reasoning(candidate, score_row):
+    flat = flatten_candidate(candidate)
+    title = flat.get("current_title") or "professional"
+    years = flat.get("years") or 0.0
+
+    if score_row.get("hard_honeypot"):
+        reason = score_row.get("hard_flags", ["internal consistency issue"])[0]
+        return _short(f"{years:.1f} yrs as {title}; internal inconsistency detected ({reason}), so the profile is de-ranked.", 500)
+
+    snippets = score_row.get("matched_evidence") or []
+    evidence_clause = snippets[0] if snippets else _concept_phrase(score_row)
+    jd_clause = _concept_phrase(score_row)
+    availability = _availability_note(score_row)
+    concern = _concern(score_row)
+
+    parts = [
+        f"{years:.1f} yrs as {title}",
+        f"career evidence shows {_short(evidence_clause, 135)}",
+        f"matching Redrob's {jd_clause} focus",
+    ]
+    if availability:
+        parts.append(availability)
+    sentence = "; ".join(parts) + "."
+    if concern:
+        sentence += f" Concern: {_short(concern, 90)}."
+    return _short(sentence.replace("\n", " "), 500)

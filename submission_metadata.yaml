@@ -1,6 +1,5 @@
-# Redrob Hackathon — Submission Metadata
-# Fill in the bracketed fields before you submit. Keep this in sync with the
-# portal upload form.
+# RedrobRank V2 submission metadata.
+# Fill bracketed placeholders before portal submission.
 
 team_name: "[YOUR TEAM NAME]"
 
@@ -21,46 +20,41 @@ team_members:
     role: "Evaluation / QA"
   - name: "[Member 4]"
     email: "[member4@example.com]"
-    role: "Product / Demo / Deck"
+    role: "Product / Demo"
 
-github_repo: "https://github.com/[YOUR_USERNAME]/[YOUR_REPO]"
-sandbox_link: "https://huggingface.co/spaces/[YOUR_USERNAME]/redrob-ranker"  # TODO: deploy
+github_repo: "https://github.com/hazelmayank/india-runs-hackathon"
+sandbox_link: "https://share.streamlit.io/[YOUR_USERNAME]/[YOUR_REPO]/main/app/streamlit_app.py"
 
 reproduce_command: "python src/rank.py --candidates ./data/candidates.jsonl --out ./submission.csv"
 
 compute:
-  platform: "Windows 11, local machine"
-  cpu_cores: 8
-  ram_gb: 16
-  python_version: "3.11.9"
-  os: "Windows 11"
-  uses_gpu_for_inference: false        # ranking is CPU-only
-  has_network_during_ranking: false    # no API calls during ranking
-  pre_computation_required: false      # v1 needs no precompute; set true if you add embeddings
-  pre_computation_time_minutes: 0
+  platform: "local CPU"
+  cpu_cores: "[FILL]"
+  ram_gb: "[FILL]"
+  python_version: "[FILL]"
+  os: "[FILL]"
+  uses_gpu_for_inference: false
+  has_network_during_ranking: false
+  hosted_llm_calls_during_ranking: false
+  pre_computation_required: false
+  expected_runtime_minutes_under_limit: true
 
 ai_tools_used:
-  - "Claude"        # architecture, code authoring/review (no candidate data sent to any hosted LLM at ranking time)
+  - "Codex / AI coding assistant for implementation and review only"
 
 ai_usage_summary: |
-  Used Claude (Claude Code) to help design the architecture and author the
-  ranking pipeline. All ranking runs locally, CPU-only, with no network or
-  hosted-LLM calls during scoring. No candidate data is sent to any external
-  service at ranking time.
+  AI tools helped author, refactor, and review the deterministic ranking code.
+  No candidate data is sent to hosted LLMs or external APIs during ranking.
 
 methodology_summary: |
-  Transparent, explainable hybrid ranker (no black box). Each candidate gets a
-  fit score from (a) weighted JD-concept evidence read from career descriptions
-  — not just the skills list, which surfaces "plain-language" fits and resists
-  keyword-stuffers; (b) trajectory features (experience band, product-vs-services
-  companies, coding recency, job-hop cadence); and (c) an explicit DISQUALIFIER
-  engine encoding the JD's "do not want" list (CV/speech-without-NLP, framework-
-  only, pure research, all-consulting careers, title-chasing). A behavioral
-  AVAILABILITY multiplier down-weights unreachable candidates (inactive, low
-  recruiter response, not open-to-work, long notice). A pure-logic CONSISTENCY
-  AUDITOR detects internally impossible profiles (honeypots) and floors them.
-  Reasoning strings are assembled deterministically from extracted facts, so they
-  never hallucinate. Runtime ~27s for 100K candidates on CPU.
+  RedrobRank V2 is a deterministic, source-aware candidate ranker. It scores
+  career-backed evidence for retrieval, ranking, search, recommendation,
+  embeddings, production ML systems, and Python/NLP foundations. Skills-list
+  matches are intentionally weak unless backed by job history. Hireability
+  signals measure reachability and logistics. Hard honeypots and soft anomalies
+  apply penalties and score caps so impossible or suspicious profiles cannot
+  dominate the top 100. A local TF-IDF semantic layer provides a small
+  explainable boost without network/API calls.
 
 declarations:
   read_submission_spec: true
@@ -68,3 +62,6 @@ declarations:
   no_collusion: true
   honeypot_check_done: true
   reproduction_tested: true
+  ranking_cpu_only: true
+  no_network_calls_during_ranking: true
+  no_hosted_llm_calls_during_ranking: true
