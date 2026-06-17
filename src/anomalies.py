@@ -57,6 +57,18 @@ def _count_skill_inflation(candidate, threshold=2):
     return count
 
 
+def _zero_month_expert_skills(candidate, max_endorsements=None):
+    skills = []
+    for skill in candidate.get("skills") or []:
+        proficiency = str(skill.get("proficiency", "")).lower()
+        months = safe_float(skill.get("duration_months"), 0.0)
+        endorsements = safe_float(skill.get("endorsements"), 0.0)
+        if proficiency == "expert" and months <= 0:
+            if max_endorsements is None or endorsements <= max_endorsements:
+                skills.append(skill.get("name"))
+    return skills
+
+
 def _hard_flags(candidate, today):
     flags = []
     flat = flatten_candidate(candidate)
@@ -79,10 +91,14 @@ def _hard_flags(candidate, today):
         real_months = _months_between(start, end)
         if real_months is not None and duration and abs(real_months - duration) > 12:
             flags.append(f"{label} duration/date contradiction")
+        if job.get("is_current") and start and not end and duration:
+            current_months = _months_between(start, today)
+            if current_months is not None and abs(current_months - duration) > 12:
+                flags.append(f"{label} current tenure/date contradiction")
         if yoe and duration > yoe * 12 + 18 and duration > 24:
             flags.append(f"{label} tenure exceeds total stated experience")
 
-    if total_months > yoe * 12 + 30 and total_months > 48:
+    if total_months > yoe * 12 + 24 and total_months > 48:
         flags.append("total career months wildly exceed stated experience")
 
     starts = [parse_date(j.get("start_date")) for j in history]
@@ -92,13 +108,12 @@ def _hard_flags(candidate, today):
         if yoe > span_years + 2.0:
             flags.append("total career span impossible relative to stated years")
 
-    expert_zero = [
-        s.get("name")
-        for s in candidate.get("skills") or []
-        if str(s.get("proficiency", "")).lower() == "expert" and safe_float(s.get("duration_months"), 0.0) <= 0
-    ]
+    expert_zero = _zero_month_expert_skills(candidate)
+    weak_expert_zero = _zero_month_expert_skills(candidate, max_endorsements=3)
     if len(expert_zero) >= 5:
         flags.append("5+ expert skills with 0 months used")
+    elif len(weak_expert_zero) >= 3:
+        flags.append("3+ expert skills with 0 months and weak endorsements")
 
     for edu in candidate.get("education") or []:
         start_year = edu.get("start_year")
@@ -136,7 +151,8 @@ def analyze_anomalies(candidate, features, evidence, today=None):
 
     expert_low = _count_skill_inflation(candidate, threshold=2)
     expert_zero = _count_skill_inflation(candidate, threshold=0)
-    if 1 <= expert_zero <= 4 or expert_low >= 3:
+    hard_skill_inflation = any("expert skills with 0 months" in flag for flag in hard)
+    if not hard_skill_inflation and (1 <= expert_zero <= 4 or expert_low >= 3):
         soft.append("expert skill inflation")
 
     positive_skill_matches = [ev for ev in evidence if ev.source == "skills_text" and ev.concept_name in jd.positive_concept_names()]

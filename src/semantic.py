@@ -9,7 +9,7 @@ from __future__ import annotations
 import math
 
 import jd
-from parser import flatten_candidate, join_text
+from parser import get_current_job, get_history, get_profile, join_text
 
 
 def build_jd_semantic_text():
@@ -26,18 +26,25 @@ def build_jd_semantic_text():
 
 
 def candidate_semantic_text(candidate):
-    flat = flatten_candidate(candidate)
+    profile = get_profile(candidate)
+    history = get_history(candidate)
+    current_job = get_current_job(candidate)
+    recent_history = []
+    for job in history[:3]:
+        recent_history.append(join_text([job.get("title"), str(job.get("description") or "")[:220]]))
+
     text = join_text(
         [
-            flat["current_title"],
-            flat["headline"],
-            flat["summary"],
-            flat["current_role_description_text"],
-            flat["career_description_text"][:350],
-            flat["company_industry_text"],
+            profile.get("current_title") or current_job.get("title"),
+            profile.get("headline"),
+            str(profile.get("summary") or "")[:260],
+            str(current_job.get("description") or "")[:260],
+            profile.get("current_industry") or current_job.get("industry"),
+            profile.get("current_company") or current_job.get("company"),
+            *recent_history,
         ]
     )
-    return text[:700]
+    return text[:600]
 
 
 def compute_semantic_scores(candidates):
@@ -61,7 +68,7 @@ def compute_semantic_scores(candidates):
         ngram_range=(1, 1),
         min_df=2,
         max_df=0.88,
-        max_features=5000,
+        max_features=4000,
         dtype=np.float32,
     )
     matrix = vectorizer.fit_transform(docs)

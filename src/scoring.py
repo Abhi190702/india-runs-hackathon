@@ -18,6 +18,9 @@ from parser import clamp, flatten_candidate
 from reasoning import build_reasoning
 
 
+PARALLEL_CHUNKSIZE = 256
+
+
 def _round(value):
     return round(clamp(value), 6)
 
@@ -132,7 +135,7 @@ def rank_candidates_v2(candidates, semantic_scores=None, today=None, include_rea
     )
     if workers and workers > 1 and len(candidates) >= 5000 and not include_reasoning:
         with ProcessPoolExecutor(max_workers=workers) as executor:
-            rows = list(executor.map(_score_task, tasks, chunksize=128))
+            rows = list(executor.map(_score_task, tasks, chunksize=PARALLEL_CHUNKSIZE))
     else:
         rows = [_score_task(task) for task in tasks]
     rows.sort(key=sort_key)

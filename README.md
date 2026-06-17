@@ -293,10 +293,11 @@ Hard honeypots are internally impossible profiles, such as:
 - Job ends before it starts
 - Current job has an end date
 - Future job start date
+- Current-job duration contradicts elapsed time since start date
 - Education ends before it starts
 - Single tenure exceeds total stated experience
 - Career span contradicts stated experience
-- Many expert skills with zero months used
+- Multiple expert skills with zero months used and weak endorsement proof
 - Large date/duration contradictions
 
 ### Soft Anomalies
@@ -503,19 +504,19 @@ Latest local full verification:
 
 ```text
 candidates loaded: 100000
-runtime seconds: 272.67
+runtime seconds: 245.71
 semantic: enabled
-hard honeypots detected: 55
+hard honeypots detected: 69
 hard honeypots in top 100: 0
-soft anomaly count in top 100: 5
-top score: 0.941260
-rank 100 score: 0.772282
+soft anomaly count in top 100: 6
+top score: 0.939794
+rank 100 score: 0.763930
 ```
 
 Validation:
 
 ```text
-Unit tests: 16 passed
+Unit tests: 18 passed
 Internal validator: passed
 Organizer validator: Submission is valid
 Reasoning quality check: passed
