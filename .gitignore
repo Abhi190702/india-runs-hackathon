@@ -1,0 +1,29 @@
+# Never commit the candidate dataset (large + provided by organizers)
+data/candidates.jsonl
+data/candidates.jsonl.gz
+*.jsonl
+# Organizer bundle folder (literal brackets must be escaped in gitignore globs)
+\[PUB\]*/
+__MACOSX/
+
+# Generated labeling sheet (regenerate via eval/make_label_sheet.py)
+eval/label_sheet.csv
+
+# Python
+__pycache__/
+*.pyc
+.venv/
+venv/
+env/
+
+# Precomputed artifacts (regenerate via scripts; too large to commit)
+artifacts/*.npy
+artifacts/*.pkl
+
+# Editor / OS
+.DS_Store
+.vscode/
+.idea/
+
+# Output (regenerate from rank.py)
+submission.csv
