@@ -31,13 +31,21 @@ def load_json_or_jsonl(text):
         data = json.loads(text)
         return data if isinstance(data, list) else []
     if text[0] == "{":
-        data = json.loads(text)
-        if isinstance(data, dict) and "candidates" in data:
-            temp = ROOT / "outputs" / "_streamlit_upload.json"
-            temp.parent.mkdir(parents=True, exist_ok=True)
-            temp.write_text(text, encoding="utf-8")
-            return list(iter_candidate_records(temp))
-        return [data]
+        # Could be (a) a single JSON object, (b) the bundled {"candidates": [...]}
+        # wrapper, or (c) a JSONL file whose first line also starts with "{".
+        # Try the whole text as one object; if that fails, fall through to JSONL.
+        try:
+            data = json.loads(text)
+        except json.JSONDecodeError:
+            data = None
+        if data is not None:
+            if isinstance(data, dict) and "candidates" in data:
+                temp = ROOT / "outputs" / "_streamlit_upload.json"
+                temp.parent.mkdir(parents=True, exist_ok=True)
+                temp.write_text(text, encoding="utf-8")
+                return list(iter_candidate_records(temp))
+            return [data]
+    # JSONL: one JSON object per line.
     return [json.loads(line) for line in text.splitlines() if line.strip()]
 
 
