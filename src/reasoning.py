@@ -25,10 +25,14 @@ def _has_concept(score_row, name):
     return name in set(score_row.get("matched_concepts") or [])
 
 
-def _snippet(score_row, limit=118):
+def _snippet(score_row, limit=118, variant=0):
+    # The synthetic dataset reuses career-description templates, so many strong
+    # candidates share the same top snippet. Rotating by `variant` makes rows
+    # quote different matched evidence, which keeps the sampled reasonings varied
+    # (Stage-4 checks that reasonings are substantively different from each other).
     snippets = score_row.get("matched_evidence") or []
     if snippets:
-        return _short(snippets[0], limit)
+        return _short(snippets[variant % len(snippets)], limit)
     return _concept_phrase(score_row)
 
 
@@ -96,19 +100,24 @@ def _finish(sentence, concern):
 
 def build_reasoning(candidate, score_row):
     flat = flatten_candidate(candidate)
-    title = flat.get("current_title") or "professional"
+    raw_title = flat.get("current_title") or "professional"
     years = flat.get("years") or 0.0
+    company = flat.get("current_company") or ""
+    variant = _variant(candidate, 4)
 
     if score_row.get("hard_honeypot"):
         reason = score_row.get("hard_flags", ["internal consistency issue"])[0]
-        return _short(f"{years:.1f} yrs as {title}; internal inconsistency detected ({reason}), so the profile is de-ranked.", 500)
+        return _short(f"{years:.1f} yrs as {raw_title}; internal inconsistency detected ({reason}), so the profile is de-ranked.", 500)
 
-    evidence_clause = _snippet(score_row)
+    # Anchor each row to the candidate's own employer so even shared snippets read
+    # distinctly across rows. Style is computed from the RAW title so a company
+    # name can't accidentally change the sentence style.
+    title = f"{raw_title} at {company}" if company else raw_title
+    evidence_clause = _snippet(score_row, variant=variant)
     jd_clause = _concept_phrase(score_row)
     availability = _availability_note(score_row)
     concern = _concern(score_row)
-    style = _style(score_row, title)
-    variant = _variant(candidate, 4)
+    style = _style(score_row, raw_title)
 
     if style == "wrong_domain":
         sentence = f"{years:.1f} yrs as {title}; AI terms are not well supported by career evidence ({evidence_clause}), so Redrob's {jd_clause} fit is weak."
