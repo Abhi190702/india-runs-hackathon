@@ -30,3 +30,6 @@ eval/label_sheet.csv
 .DS_Store
 .vscode/
 .idea/
+
+# Generated proxy gold set (regenerate via eval/auto_gold.py)
+eval/gold_auto.csv
