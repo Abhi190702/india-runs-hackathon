@@ -137,16 +137,27 @@ def _score_task(task):
 
 def rank_candidates_v2(candidates, semantic_scores=None, today=None, include_reasoning=True, workers=1, timings=None):
     semantic_scores = semantic_scores if semantic_scores is not None else [None] * len(candidates)
-    tasks = (
-        (i, candidate, semantic_scores[i], today, include_reasoning)
-        for i, candidate in enumerate(candidates)
-    )
+    def make_tasks():
+        # Fresh iterator each call so the serial fallback can re-consume it.
+        return (
+            (i, candidate, semantic_scores[i], today, include_reasoning)
+            for i, candidate in enumerate(candidates)
+        )
+
     scoring_start = time.perf_counter()
-    if workers and workers > 1 and len(candidates) >= 5000 and not include_reasoning:
-        with ProcessPoolExecutor(max_workers=workers) as executor:
-            rows = list(executor.map(_score_task, tasks, chunksize=PARALLEL_CHUNKSIZE))
-    else:
-        rows = [_score_task(task) for task in tasks]
+    use_parallel = workers and workers > 1 and len(candidates) >= 5000 and not include_reasoning
+    rows = None
+    if use_parallel:
+        # Some reproduction sandboxes forbid spawning processes. If the parallel
+        # path fails for any reason, fall back to a deterministic serial run
+        # (identical output, just slower) instead of crashing.
+        try:
+            with ProcessPoolExecutor(max_workers=workers) as executor:
+                rows = list(executor.map(_score_task, make_tasks(), chunksize=PARALLEL_CHUNKSIZE))
+        except Exception:
+            rows = None
+    if rows is None:
+        rows = [_score_task(task) for task in make_tasks()]
     if timings is not None:
         timings["scoring_time"] = time.perf_counter() - scoring_start
     sorting_start = time.perf_counter()
