@@ -402,6 +402,8 @@ Example shape:
 |   |-- sample_candidates.json
 |   `-- streamlit_app.py
 |-- docs/
+|   |-- PITCH_DECK.md
+|   |-- PPT_SUBMISSION_CONTENT.md
 |   |-- architecture.md
 |   |-- honeypot_detection.md
 |   |-- methodology.md
@@ -409,12 +411,17 @@ Example shape:
 |   |-- scoring_model.md
 |   `-- streamlit_deployment.md
 |-- eval/
+|   |-- auto_gold.py
 |   |-- check_reasoning_quality.py
 |   |-- compare_runs.py
 |   |-- diagnose_honeypots.py
+|   |-- gem_check.py
 |   |-- inspect_top.py
 |   |-- make_label_sheet.py
 |   `-- metrics.py
+|-- scripts/
+|   |-- csv_to_xlsx.py
+|   `-- fill_ppt.py
 |-- src/
 |   |-- anomalies.py
 |   |-- audit.py
@@ -519,12 +526,13 @@ hard honeypots in top 100: 0
 soft anomaly count in top 100: 6
 top score: 0.939794
 rank 100 score: 0.763930
-load_time: 14.70
-semantic_time: 38.24
-scoring_time: 85.07
-total_time: 138.91
-fast_total_time: 131.62
+total_time (parallel): ~55-80 s
+total_time (serial fallback): ~205 s
 ```
+
+Both the parallel and serial paths are well under the 5-minute budget and produce
+identical, deterministic output. If a reproduction sandbox forbids process
+spawning, scoring automatically falls back to the serial path instead of failing.
 
 Validation:
 
@@ -534,7 +542,7 @@ Internal validator: passed
 Organizer validator: Submission is valid
 Reasoning quality check: passed
 Compile checks: passed
-Final sanity: submission/debug passed; metadata placeholders still need team details
+Final sanity: submission, debug, and metadata all passed
 ```
 
 ## Final Verification
@@ -555,7 +563,7 @@ python eval/inspect_top.py --debug outputs/top100_debug.csv --k 25
 python eval/final_sanity_check.py --submission submission.csv --debug outputs/top100_debug.csv --metadata submission_metadata.yaml
 ```
 
-`submission_metadata.yaml` intentionally stays `submission_ready: false` until team contact details and the deployed Streamlit sandbox link are filled.
+`submission_metadata.yaml` is complete: team contact details and the deployed Streamlit sandbox link are filled, and `submission_ready: true`.
 
 ---
 
@@ -565,7 +573,7 @@ python eval/final_sanity_check.py --submission submission.csv --debug outputs/to
 - `outputs/top100_debug.csv` has no hard honeypots in top 100.
 - `python outputs/validate_submission.py submission.csv` passes.
 - `python eval/final_sanity_check.py ...` passes except for intentional metadata placeholders.
-- `submission_metadata.yaml` has real team/contact/sandbox details before portal submission.
+- `submission_metadata.yaml` has real team/contact/sandbox details and `submission_ready: true`.
 - `data/candidates.jsonl`, `submission.csv`, and generated debug outputs are not committed.
 
 ---
